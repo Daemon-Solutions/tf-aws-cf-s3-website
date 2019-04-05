@@ -58,6 +58,8 @@ resource "aws_s3_bucket" "website" {
 
   tags = "${var.tags}"
 
+  cors_rule = "${var.cors_rule}"
+
   lifecycle {
     create_before_destroy = true
   }
