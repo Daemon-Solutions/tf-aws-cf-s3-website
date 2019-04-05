@@ -11,15 +11,13 @@ resource "aws_acm_certificate" "cert" {
   ]
 
   validation_method = "DNS"
-
-  provider = "aws.us-east-1"
+  provider          = "aws.us-east-1"
 }
 
 resource "aws_route53_record" "cert_dns_validation_record_base" {
-  name = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_name}"
-  type = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_type}"
-  ttl  = 60
-
+  name    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_name}"
+  type    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_type}"
+  ttl     = 60
   zone_id = "ZW7HC3OXIT5P9"
 
   records = [
@@ -28,10 +26,9 @@ resource "aws_route53_record" "cert_dns_validation_record_base" {
 }
 
 resource "aws_route53_record" "cert_dns_validation_record_alternate" {
-  name = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_name}"
-  type = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_type}"
-  ttl  = 60
-
+  name    = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_name}"
+  type    = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_type}"
+  ttl     = 60
   zone_id = "ZW7HC3OXIT5P9"
 
   records = [

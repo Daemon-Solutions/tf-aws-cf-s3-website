@@ -1,6 +1,5 @@
 module "redirect" {
-  source = "../"
-
+  source              = "../"
   domain_names        = ["trynotto.click"]
   redirect_to         = "https://www.trynotto.click"
   redirect            = true

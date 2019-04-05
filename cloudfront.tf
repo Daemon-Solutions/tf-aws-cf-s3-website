@@ -1,6 +1,5 @@
 resource "aws_cloudfront_origin_access_identity" "website" {
-  count = "${var.enabled ? 1 : 0}"
-
+  count   = "${var.enabled ? 1 : 0}"
   comment = "The origin access identity for website and redirection solution."
 }
 
@@ -30,9 +29,8 @@ resource "aws_cloudfront_distribution" "website" {
   }
 
   default_cache_behavior {
-    allowed_methods = ["${var.allowed_methods}"]
-    cached_methods  = ["${var.cached_methods}"]
-
+    allowed_methods  = ["${var.allowed_methods}"]
+    cached_methods   = ["${var.cached_methods}"]
     target_origin_id = "${aws_s3_bucket.website.id}"
 
     forwarded_values {
