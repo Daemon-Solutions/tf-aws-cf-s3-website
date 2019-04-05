@@ -7,6 +7,14 @@ module "website" {
   logging_bucket      = "${aws_s3_bucket.cloudfront_logs.bucket_domain_name}"
   logging_prefix      = "website"
   s3_bucket_name      = "trynottoclick-website"
+  cors_rule           = [
+    {
+      allowed_headers = [ "Authorization" ]
+      allowed_methods = [ "GET", "HEAD" ]
+      allowed_origins = [ "*" ]
+      max_age_seconds = 3000
+    }
+  ]
 }
 
 resource "aws_route53_record" "website_dns" {

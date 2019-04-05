@@ -40,6 +40,15 @@ variable "comment" {
   default = ""
 }
 
+variable "cors_rule" {
+  description = "A rule of Cross-Origin Resource Sharing."
+
+  type = "list"
+
+  default = []
+}
+
+
 variable "default_ttl" {
   description = "The default amount of time (in seconds) that an object is in a CloudFront cache before CloudFront forwards another request in the absence of an Cache-Control max-age or Expires header."
   default     = "86400"

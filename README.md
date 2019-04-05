@@ -40,6 +40,14 @@ module "website" {
   logging_bucket      = "${aws_s3_bucket.cloudfront_logs.bucket_domain_name}"
   logging_prefix      = "website"
   s3_bucket_name      = "trynottoclick-website"
+  cors_rule           = [
+    {
+      allowed_headers = [ "Authorization" ]
+      allowed_methods = [ "GET", "HEAD" ]
+      allowed_origins = [ "*" ]
+      max_age_seconds = 3000
+    }
+  ]
 }
 
 resource "aws_route53_record" "website_dns" {
@@ -63,6 +71,7 @@ resource "aws_route53_record" "website_dns" {
 | allowed\_methods | Controls which HTTP methods CloudFront processes and forwards to your Amazon S3 bucket or your custom origin. | list | `<list>` | no |
 | cached\_methods | Controls whether CloudFront caches the response to requests using the specified HTTP methods. | list | `<list>` | no |
 | comment | Any comments you want to include about the distribution. | string | `""` | no |
+| cors\_rule | A rule of Cross-Origin Resource Sharing. | list | `<list>` | no |
 | default\_ttl | The default amount of time (in seconds) that an object is in a CloudFront cache before CloudFront forwards another request in the absence of an Cache-Control max-age or Expires header. | string | `"86400"` | no |
 | domain\_names | Extra CNAMEs (alternate domain names). | list | `<list>` | no |
 | enabled | Enable and create the CloudFront Distribution and S3 Bucket solution. | string | `"true"` | no |
