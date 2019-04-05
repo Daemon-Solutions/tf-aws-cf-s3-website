@@ -1,19 +1,19 @@
 module "website" {
-  source = "../"
-
+  source              = "../"
   domain_names        = ["www.trynotto.click"]
   acm_certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   tags                = "${var.website_tags}"
   logging_bucket      = "${aws_s3_bucket.cloudfront_logs.bucket_domain_name}"
   logging_prefix      = "website"
   s3_bucket_name      = "trynottoclick-website"
-  cors_rule           = [
+
+  cors_rule = [
     {
-      allowed_headers = [ "Authorization" ]
-      allowed_methods = [ "GET", "HEAD" ]
-      allowed_origins = [ "*" ]
+      allowed_headers = ["Authorization"]
+      allowed_methods = ["GET", "HEAD"]
+      allowed_origins = ["*"]
       max_age_seconds = 3000
-    }
+    },
   ]
 }
 

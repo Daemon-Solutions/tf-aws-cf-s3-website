@@ -37,8 +37,7 @@ data "aws_iam_policy_document" "website" {
 }
 
 resource "aws_s3_bucket" "website" {
-  count = "${var.enabled ? 1 : 0}"
-
+  count  = "${var.enabled ? 1 : 0}"
   bucket = "${var.s3_bucket_name}"
   acl    = "private"
 
@@ -54,10 +53,8 @@ resource "aws_s3_bucket" "website" {
     enabled = "${var.s3_bucket_versioning_enabled}"
   }
 
-  website = "${local.s3_config[var.redirect ? "redirect" : "website"]}"
-
-  tags = "${var.tags}"
-
+  website   = "${local.s3_config[var.redirect ? "redirect" : "website"]}"
+  tags      = "${var.tags}"
   cors_rule = "${var.cors_rule}"
 
   lifecycle {
@@ -66,9 +63,7 @@ resource "aws_s3_bucket" "website" {
 }
 
 resource "aws_s3_bucket_policy" "website" {
-  count = "${var.enabled ? 1 : 0}"
-
+  count  = "${var.enabled ? 1 : 0}"
   bucket = "${aws_s3_bucket.website.id}"
-
   policy = "${data.aws_iam_policy_document.website.json}"
 }
