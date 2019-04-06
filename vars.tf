@@ -132,6 +132,12 @@ variable "restriction_type" {
   default     = "none"
 }
 
+variable "route53_alias_records" {
+  description = "A list of maps of the domains in the CloudFront Distribution to the Route53 Zone IDs to be used to create DNS Alias records.  For example: ```route53_alias_records = [ { name = \"www.example.com\" zone_id = \"Z123456\" }, { name = \"www.stage-example.com\" zone_id = \"Z123456\" } ]```)"
+  type        = "list"
+  default     = []
+}
+
 variable "routing_rules" {
   description = "A json array containing routing rules describing redirect behavior and when redirects are applied to a website."
   type        = "string"
@@ -141,6 +147,12 @@ variable "routing_rules" {
 variable "s3_bucket_name" {
   description = "The name of the S3 Bucket to be created."
   type        = "string"
+}
+
+variable "s3_bucket_region" {
+  description = "The AWS Region to create the S3 Bucket resource in. Defaults to current region."
+  type        = "string"
+  default     = ""
 }
 
 variable "s3_bucket_versioning_enabled" {

@@ -40,6 +40,7 @@ resource "aws_s3_bucket" "website" {
   count  = "${var.enabled ? 1 : 0}"
   bucket = "${var.s3_bucket_name}"
   acl    = "private"
+  region = "${var.s3_bucket_region}"
 
   server_side_encryption_configuration {
     rule {
@@ -53,8 +54,9 @@ resource "aws_s3_bucket" "website" {
     enabled = "${var.s3_bucket_versioning_enabled}"
   }
 
-  website   = "${local.s3_config[var.redirect ? "redirect" : "website"]}"
-  tags      = "${var.tags}"
+  website = "${local.s3_config[var.redirect ? "redirect" : "website"]}"
+  tags    = "${var.tags}"
+
   cors_rule = "${var.cors_rule}"
 
   lifecycle {
