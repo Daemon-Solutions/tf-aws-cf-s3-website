@@ -1,6 +1,6 @@
 module "website" {
   source              = "../"
-  domain_names        = ["www.trynotto.click"]
+  domain_names        = ["www.trynotto.click", "www.stage.trynotto.click"]
   acm_certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   tags                = "${var.website_tags}"
   logging_bucket      = "${aws_s3_bucket.cloudfront_logs.bucket_domain_name}"
@@ -15,16 +15,15 @@ module "website" {
       max_age_seconds = 3000
     },
   ]
-}
 
-resource "aws_route53_record" "website_dns" {
-  zone_id = "ZW7HC3OXIT5P9"
-  name    = "www.trynotto.click"
-  type    = "A"
-
-  alias {
-    name                   = "${module.website.cf_domain_name}"
-    zone_id                = "${module.website.cf_hosted_zone_id}"
-    evaluate_target_health = true
-  }
+  route53_alias_records = [
+    {
+      name    = "www.trynotto.click"
+      zone_id = "ZW7HC3OXIT5P9"
+    },
+    {
+      name    = "www.stage.trynotto.click"
+      zone_id = "Z3BT5WSADCX44L"
+    },
+  ]
 }

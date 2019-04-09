@@ -7,7 +7,7 @@ resource "aws_acm_certificate" "cert" {
   domain_name = "www.trynotto.click"
 
   subject_alternative_names = [
-    "trynotto.click",
+    "www.stage.trynotto.click",
   ]
 
   validation_method = "DNS"
@@ -29,7 +29,7 @@ resource "aws_route53_record" "cert_dns_validation_record_alternate" {
   name    = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_name}"
   type    = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_type}"
   ttl     = 60
-  zone_id = "ZW7HC3OXIT5P9"
+  zone_id = "Z3BT5WSADCX44L"
 
   records = [
     "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_value}",

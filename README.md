@@ -19,47 +19,35 @@ module "redirect" {
   s3_bucket_name      = "trynottoclick-redirect"
 }
 
-resource "aws_route53_record" "redirection_dns" {
-  zone_id = "ZW7HC3OXIT5P9"
-  name    = "trynotto.click"
-  type    = "A"
-
-  alias {
-    name                   = "${module.redirect.cf_domain_name}"
-    zone_id                = "${module.redirect.cf_hosted_zone_id}"
-    evaluate_target_health = true
-  }
-}
-
 module "website" {
-  source = "../"
-
-  domain_names        = ["www.trynotto.click"]
+  source              = "../"
+  domain_names        = ["www.trynotto.click", "www.stage.trynotto.click"]
   acm_certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   tags                = "${var.website_tags}"
   logging_bucket      = "${aws_s3_bucket.cloudfront_logs.bucket_domain_name}"
   logging_prefix      = "website"
   s3_bucket_name      = "trynottoclick-website"
-  cors_rule           = [
+
+  cors_rule = [
     {
-      allowed_headers = [ "Authorization" ]
-      allowed_methods = [ "GET", "HEAD" ]
-      allowed_origins = [ "*" ]
+      allowed_headers = ["Authorization"]
+      allowed_methods = ["GET", "HEAD"]
+      allowed_origins = ["*"]
       max_age_seconds = 3000
-    }
+    },
   ]
-}
 
-resource "aws_route53_record" "website_dns" {
-  zone_id = "ZW7HC3OXIT5P9"
-  name    = "www.trynotto.click"
-  type    = "A"
 
-  alias {
-    name                   = "${module.website.cf_domain_name}"
-    zone_id                = "${module.website.cf_hosted_zone_id}"
-    evaluate_target_health = true
-  }
+  route53_alias_records = [
+    {
+      name    = "www.trynotto.click"
+      zone_id = "ZW7HC3OXIT5P9"
+    },
+    {
+      name    = "www.stage.trynotto.click"
+      zone_id = "Z3BT5WSADCX44L"
+    },
+  ]
 }
 ```
 
@@ -88,8 +76,10 @@ resource "aws_route53_record" "website_dns" {
 | redirect\_to | The URL that the web traffic will be redirected to. Eg. https://www.example.com | string | `""` | no |
 | restriction\_locations | The ISO 3166-1-alpha-2 codes for which you want CloudFront either to distribute your content (whitelist) or not distribute your content (blacklist). | list | `<list>` | no |
 | restriction\_type | The method that you want to use to restrict distribution of your content by country: none, whitelist, or blacklist. | string | `"none"` | no |
+| route53\_alias\_records | A list of maps of the domains in the CloudFront Distribution to the Route53 Zone IDs to be used to create DNS Alias records.  For example: ```route53_alias_records = [ { name = "www.example.com" zone_id = "Z123456" }, { name = "www.stage-example.com" zone_id = "Z123456" } ]```) | list | `<list>` | no |
 | routing\_rules | A json array containing routing rules describing redirect behavior and when redirects are applied to a website. | string | `""` | no |
 | s3\_bucket\_name | The name of the S3 Bucket to be created. | string | n/a | yes |
+| s3\_bucket\_region | The AWS Region to create the S3 Bucket resource in. Defaults to current region. | string | `""` | no |
 | s3\_bucket\_versioning\_enabled | Enable versioning. | string | `"true"` | no |
 | smooth\_streaming | Indicates whether you want to distribute media files in Microsoft Smooth Streaming format using the origin that is associated with this cache behavior. | string | `"false"` | no |
 | tags | The tags to associate with the resources. | map | `<map>` | no |
