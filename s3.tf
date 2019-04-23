@@ -1,3 +1,8 @@
+data "aws_s3_bucket" "bucket" {
+  count  = "${var.enabled ? 1 : 0}"
+  bucket = "${var.s3_bucket_create ? aws_s3_bucket.website.id : var.s3_bucket_name}"
+}
+
 locals {
   s3_config = {
     redirect = [{
@@ -13,7 +18,7 @@ locals {
 }
 
 data "aws_iam_policy_document" "website" {
-  count = "${var.enabled ? 1 : 0}"
+  count = "${var.enabled && var.s3_bucket_create ? 1 : 0}"
 
   statement {
     sid = "CloudFrontReadGetObject"
@@ -31,13 +36,13 @@ data "aws_iam_policy_document" "website" {
     ]
 
     resources = [
-      "${aws_s3_bucket.website.arn}/*",
+      "${data.aws_s3_bucket.bucket.arn}/*",
     ]
   }
 }
 
 resource "aws_s3_bucket" "website" {
-  count  = "${var.enabled ? 1 : 0}"
+  count  = "${var.enabled && var.s3_bucket_create ? 1 : 0}"
   bucket = "${var.s3_bucket_name}"
   acl    = "private"
   region = "${var.s3_bucket_region}"
@@ -65,7 +70,7 @@ resource "aws_s3_bucket" "website" {
 }
 
 resource "aws_s3_bucket_policy" "website" {
-  count  = "${var.enabled ? 1 : 0}"
-  bucket = "${aws_s3_bucket.website.id}"
+  count  = "${var.enabled && var.s3_bucket_create ? 1 : 0}"
+  bucket = "${data.aws_s3_bucket.bucket.id}"
   policy = "${data.aws_iam_policy_document.website.json}"
 }

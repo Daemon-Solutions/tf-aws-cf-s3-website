@@ -145,8 +145,13 @@ variable "routing_rules" {
 }
 
 variable "s3_bucket_name" {
-  description = "The name of the S3 Bucket to be created."
+  description = "The name of the S3 Bucket to be created or used. If 's3_bucket_create' is false this bucket has to already exist."
   type        = "string"
+}
+
+variable "s3_bucket_create" {
+  description = "Whether to create a S3 bucket with name provided in 's3_bucket_name'"
+  default     = true
 }
 
 variable "s3_bucket_region" {

@@ -19,8 +19,8 @@ resource "aws_cloudfront_distribution" "website" {
   retain_on_delete    = false
 
   origin {
-    origin_id   = "${aws_s3_bucket.website.id}"
-    domain_name = "${aws_s3_bucket.website.website_endpoint}"
+    origin_id   = "${data.aws_s3_bucket.bucket.id}"
+    domain_name = "${data.aws_s3_bucket.bucket.website_endpoint}"
     origin_path = ""
 
     s3_origin_config {
@@ -31,7 +31,7 @@ resource "aws_cloudfront_distribution" "website" {
   default_cache_behavior {
     allowed_methods  = ["${var.allowed_methods}"]
     cached_methods   = ["${var.cached_methods}"]
-    target_origin_id = "${aws_s3_bucket.website.id}"
+    target_origin_id = "${data.aws_s3_bucket.bucket.id}"
 
     forwarded_values {
       query_string = false

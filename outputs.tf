@@ -20,25 +20,25 @@ output "cf_id" {
 
 output "s3_bucket_id" {
   description = "The name of the S3 Bucket."
-  value       = "${join("", aws_s3_bucket.website.*.id)}"
+  value       = "${join("", data.aws_s3_bucket.bucket.*.id)}"
 }
 
 output "s3_bucket_arn" {
   description = "The ARN of the S3 Bucket."
-  value       = "${join("", aws_s3_bucket.website.*.arn)}"
+  value       = "${join("", data.aws_s3_bucket.bucket.*.arn)}"
 }
 
 output "s3_bucket_domain_name" {
   description = "The bucket domain name for the website. Will be of format bucketname.s3.amazonaws.com."
-  value       = "${join("", aws_s3_bucket.website.*.bucket_domain_name)}"
+  value       = "${join("", data.aws_s3_bucket.bucket.*.bucket_domain_name)}"
 }
 
 output "s3_bucket_endpoint" {
   description = "The website endpoint."
-  value       = "${join("", aws_s3_bucket.website.*.website_endpoint)}"
+  value       = "${join("", data.aws_s3_bucket.bucket.*.website_endpoint)}"
 }
 
 output "s3_bucket_domain" {
   description = "The domain of the website endpoint. This is used to create Route 53 alias records."
-  value       = "${join("", aws_s3_bucket.website.*.website_domain)}"
+  value       = "${join("", data.aws_s3_bucket.bucket.*.website_domain)}"
 }
