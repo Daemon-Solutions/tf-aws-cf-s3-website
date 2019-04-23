@@ -20,7 +20,7 @@ resource "aws_cloudfront_distribution" "website" {
 
   origin {
     origin_id   = "${aws_s3_bucket.website.id}"
-    domain_name = "${aws_s3_bucket.website.bucket_regional_domain_name}"
+    domain_name = "${aws_s3_bucket.website.website_endpoint}"
     origin_path = ""
 
     s3_origin_config {
