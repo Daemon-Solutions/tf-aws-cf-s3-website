@@ -10,9 +10,9 @@ resource "aws_cloudfront_distribution" "website" {
     create_before_destroy = true
   }
 
-  aliases             = "${var.domain_names}"
+  aliases             = "${var.aliases}"
   comment             = "${var.comment}"
-  default_root_object = "${var.index_document}"
+  default_root_object = "${var.default_root_object}"
   enabled             = true
   is_ipv6_enabled     = true
   price_class         = "${var.price_class}"
@@ -53,8 +53,8 @@ resource "aws_cloudfront_distribution" "website" {
 
   restrictions {
     geo_restriction {
-      restriction_type = "${var.restriction_type}"
-      locations        = "${var.restriction_locations}"
+      restriction_type = "${var.geo_restriction_type}"
+      locations        = "${var.geo_restriction_locations}"
     }
   }
 
@@ -70,6 +70,6 @@ resource "aws_cloudfront_distribution" "website" {
     acm_certificate_arn            = "${var.acm_certificate_arn}"
     cloudfront_default_certificate = false
     ssl_support_method             = "sni-only"
-    minimum_protocol_version       = "${var.minimum_protocol_version}"
+    minimum_protocol_version       = "${var.minimum_ssl_protocol_version}"
   }
 }

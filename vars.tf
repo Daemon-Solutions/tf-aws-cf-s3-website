@@ -47,7 +47,7 @@ variable "default_ttl" {
   default     = "86400"
 }
 
-variable "domain_names" {
+variable "aliases" {
   description = "Extra CNAMEs (alternate domain names)."
   type        = "list"
   default     = []
@@ -64,10 +64,22 @@ variable "error_document" {
   default     = "index.html"
 }
 
-variable "index_document" {
+variable "default_root_object" {
   description = "The filename or the HTML file to use/present when browsing to the website."
   type        = "string"
   default     = "index.html"
+}
+
+variable "geo_restriction_locations" {
+  description = "The ISO 3166-1-alpha-2 codes for which you want CloudFront either to distribute your content (whitelist) or not distribute your content (blacklist)."
+  type        = "list"
+  default     = []
+}
+
+variable "geo_restriction_type" {
+  description = "The method that you want to use to restrict distribution of your content by country: none, whitelist, or blacklist."
+  type        = "string"
+  default     = "none"
 }
 
 variable "logging_bucket" {
@@ -97,7 +109,7 @@ variable "min_ttl" {
   default     = "0"
 }
 
-variable "minimum_protocol_version" {
+variable "minimum_ssl_protocol_version" {
   description = "The minimum version of the SSL protocol that you want CloudFront to use for HTTPS connections. One of SSLv3, TLSv1, TLSv1_2016, TLSv1.1_2016 or TLSv1.2_2018."
   type        = "string"
   default     = "TLSv1.2_2018"
@@ -118,18 +130,6 @@ variable "redirect_to" {
   description = "The URL that the web traffic will be redirected to. Eg. https://www.example.com"
   type        = "string"
   default     = ""
-}
-
-variable "restriction_locations" {
-  description = "The ISO 3166-1-alpha-2 codes for which you want CloudFront either to distribute your content (whitelist) or not distribute your content (blacklist)."
-  type        = "list"
-  default     = []
-}
-
-variable "restriction_type" {
-  description = "The method that you want to use to restrict distribution of your content by country: none, whitelist, or blacklist."
-  type        = "string"
-  default     = "none"
 }
 
 variable "route53_alias_records" {
