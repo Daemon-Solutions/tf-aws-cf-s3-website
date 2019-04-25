@@ -9,8 +9,8 @@ A CloudFront and S3 Bucket solution for the following two scenarios:
 module "redirect" {
   source = "../"
 
-  domain_names        = ["trynotto.click"]
-  redirect_to         = "https://www.trynotto.click"
+  aliases             = ["example.com"]
+  redirect_to         = "https://www.example.com"
   redirect            = true
   acm_certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   tags                = "${var.website_redirect_tags}"
@@ -21,7 +21,7 @@ module "redirect" {
 
 module "website" {
   source              = "../"
-  domain_names        = ["www.trynotto.click", "www.stage.trynotto.click"]
+  aliases             = ["www.example.com", "www.stage.example.com"]
   acm_certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   tags                = "${var.website_tags}"
   logging_bucket      = "${aws_s3_bucket.cloudfront_logs.bucket_domain_name}"
@@ -40,12 +40,12 @@ module "website" {
 
   route53_alias_records = [
     {
-      name    = "www.trynotto.click"
-      zone_id = "ZW7HC3OXIT5P9"
+      name    = "www.example.com"
+      zone_id = "VA75R91YQ4YSXR"
     },
     {
-      name    = "www.stage.trynotto.click"
-      zone_id = "Z3BT5WSADCX44L"
+      name    = "www.stage.example.com"
+      zone_id = "ECK2X61SHOTGC2"
     },
   ]
 }
@@ -56,26 +56,26 @@ module "website" {
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | acm\_certificate\_arn | The ARN of the AWS Certificate Manager certificate that you wish to use with this distribution. The ACM certificate must be in US-EAST-1 (N. Virginia). | string | n/a | yes |
+| aliases | Extra CNAMEs (alternate domain names). | list | `<list>` | no |
 | allowed\_methods | Controls which HTTP methods CloudFront processes and forwards to your Amazon S3 bucket or your custom origin. | list | `<list>` | no |
 | cached\_methods | Controls whether CloudFront caches the response to requests using the specified HTTP methods. | list | `<list>` | no |
 | comment | Any comments you want to include about the distribution. | string | `""` | no |
 | cors\_rule | A rule of Cross-Origin Resource Sharing. | list | `<list>` | no |
+| default\_root\_object | The filename or the HTML file to use/present when browsing to the website. | string | `"index.html"` | no |
 | default\_ttl | The default amount of time (in seconds) that an object is in a CloudFront cache before CloudFront forwards another request in the absence of an Cache-Control max-age or Expires header. | string | `"86400"` | no |
-| domain\_names | Extra CNAMEs (alternate domain names). | list | `<list>` | no |
 | enabled | Enable and create the CloudFront Distribution and S3 Bucket solution. | string | `"true"` | no |
 | error\_document | The filename or the HTML file to use/present in the event of an error occuring. | string | `"index.html"` | no |
-| index\_document | The filename or the HTML file to use/present when browsing to the website. | string | `"index.html"` | no |
+| geo\_restriction\_locations | The ISO 3166-1-alpha-2 codes for which you want CloudFront either to distribute your content (whitelist) or not distribute your content (blacklist). | list | `<list>` | no |
+| geo\_restriction\_type | The method that you want to use to restrict distribution of your content by country: none, whitelist, or blacklist. | string | `"none"` | no |
 | logging\_bucket | The Amazon S3 bucket to store the access logs in, for example, myawslogbucket.s3.amazonaws.com. | string | n/a | yes |
 | logging\_include\_cookies | Specifies whether you want CloudFront to include cookies in access logs. | string | `"false"` | no |
 | logging\_prefix | An optional string that you want CloudFront to prefix to the access log filenames for this distribution, for example, myprefix/. | string | `""` | no |
 | max\_ttl | The maximum amount of time (in seconds) that an object is in a CloudFront cache before CloudFront forwards another request to your origin to determine whether the object has been updated. Only effective in the presence of Cache-Control max-age, Cache-Control s-maxage, and Expires headers. | string | `"31536000"` | no |
 | min\_ttl | The minimum amount of time that you want objects to stay in CloudFront caches before CloudFront queries your origin to see whether the object has been updated. | string | `"0"` | no |
-| minimum\_protocol\_version | The minimum version of the SSL protocol that you want CloudFront to use for HTTPS connections. One of SSLv3, TLSv1, TLSv1_2016, TLSv1.1_2016 or TLSv1.2_2018. | string | `"TLSv1.2_2018"` | no |
+| minimum\_ssl\_protocol\_version | The minimum version of the SSL protocol that you want CloudFront to use for HTTPS connections. One of SSLv3, TLSv1, TLSv1_2016, TLSv1.1_2016 or TLSv1.2_2018. | string | `"TLSv1.2_2018"` | no |
 | price\_class | The price class for this distribution. One of PriceClass_All, PriceClass_200, PriceClass_100. | string | `"PriceClass_All"` | no |
 | redirect | Enable redirection mode. | string | `"false"` | no |
 | redirect\_to | The URL that the web traffic will be redirected to. Eg. https://www.example.com | string | `""` | no |
-| restriction\_locations | The ISO 3166-1-alpha-2 codes for which you want CloudFront either to distribute your content (whitelist) or not distribute your content (blacklist). | list | `<list>` | no |
-| restriction\_type | The method that you want to use to restrict distribution of your content by country: none, whitelist, or blacklist. | string | `"none"` | no |
 | route53\_alias\_records | A list of maps of the domains in the CloudFront Distribution to the Route53 Zone IDs to be used to create DNS Alias records.  For example: ```route53_alias_records = [ { name = "www.example.com" zone_id = "Z123456" }, { name = "www.stage-example.com" zone_id = "Z123456" } ]```) | list | `<list>` | no |
 | routing\_rules | A json array containing routing rules describing redirect behavior and when redirects are applied to a website. | string | `""` | no |
 | s3\_bucket\_name | The name of the S3 Bucket to be created. | string | n/a | yes |
