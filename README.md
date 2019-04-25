@@ -95,7 +95,7 @@ module "website" {
 | cf\_hosted\_zone\_id | The CloudFront Route 53 zone ID that can be used to route an Alias Resource Record Set to. This attribute is simply an alias for the zone ID Z2FDTNDATAQYW2. |
 | cf\_id | The identifier for the CloudFront Distribution. For example: EDFDVBD632BHDS5. |
 | s3\_bucket\_arn | The ARN of the S3 Bucket. |
-| s3\_bucket\_domain | The domain of the website endpoint. This is used to create Route 53 alias records. |
 | s3\_bucket\_domain\_name | The bucket domain name for the website. Will be of format bucketname.s3.amazonaws.com. |
-| s3\_bucket\_endpoint | The website endpoint. |
 | s3\_bucket\_id | The name of the S3 Bucket. |
+| s3\_bucket\_website\_domain | The domain of the website endpoint. This is used to create Route 53 alias records. |
+| s3\_bucket\_website\_endpoint | The website endpoint. |
