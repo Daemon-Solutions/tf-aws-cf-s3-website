@@ -33,12 +33,12 @@ output "s3_bucket_domain_name" {
   value       = "${join("", aws_s3_bucket.website.*.bucket_domain_name)}"
 }
 
-output "s3_bucket_endpoint" {
+output "s3_bucket_website_endpoint" {
   description = "The website endpoint."
   value       = "${join("", aws_s3_bucket.website.*.website_endpoint)}"
 }
 
-output "s3_bucket_domain" {
+output "s3_bucket_website_domain" {
   description = "The domain of the website endpoint. This is used to create Route 53 alias records."
   value       = "${join("", aws_s3_bucket.website.*.website_domain)}"
 }
