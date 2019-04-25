@@ -5,7 +5,7 @@ locals {
     }]
 
     website = [{
-      index_document = "${var.index_document}"
+      index_document = "${var.default_root_object}"
       error_document = "${var.error_document}"
       routing_rules  = "${var.routing_rules}"
     }]
