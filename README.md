@@ -9,8 +9,8 @@ A CloudFront and S3 Bucket solution for the following two scenarios:
 module "redirect" {
   source = "../"
 
-  domain_names        = ["trynotto.click"]
-  redirect_to         = "https://www.trynotto.click"
+  domain_names        = ["example.com"]
+  redirect_to         = "https://www.example.com"
   redirect            = true
   acm_certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   tags                = "${var.website_redirect_tags}"
@@ -21,12 +21,13 @@ module "redirect" {
 
 module "website" {
   source              = "../"
-  domain_names        = ["www.trynotto.click", "www.stage.trynotto.click"]
+  domain_names        = ["www.example.com", "www.stage.example.com"]
   acm_certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   tags                = "${var.website_tags}"
   logging_bucket      = "${aws_s3_bucket.cloudfront_logs.bucket_domain_name}"
   logging_prefix      = "website"
   s3_bucket_name      = "trynottoclick-website"
+  s3_bucket_create    = false
 
   cors_rule = [
     {
@@ -40,12 +41,12 @@ module "website" {
 
   route53_alias_records = [
     {
-      name    = "www.trynotto.click"
-      zone_id = "ZW7HC3OXIT5P9"
+      name    = "www.example.com"
+      zone_id = "ABCDEFGHI1234"
     },
     {
-      name    = "www.stage.trynotto.click"
-      zone_id = "Z3BT5WSADCX44L"
+      name    = "www.stage.example.com"
+      zone_id = "ABCDEFGHI4567"
     },
   ]
 }
@@ -79,6 +80,7 @@ module "website" {
 | route53\_alias\_records | A list of maps of the domains in the CloudFront Distribution to the Route53 Zone IDs to be used to create DNS Alias records.  For example: ```route53_alias_records = [ { name = "www.example.com" zone_id = "Z123456" }, { name = "www.stage-example.com" zone_id = "Z123456" } ]```) | list | `<list>` | no |
 | routing\_rules | A json array containing routing rules describing redirect behavior and when redirects are applied to a website. | string | `""` | no |
 | s3\_bucket\_name | The name of the S3 Bucket to be created. | string | n/a | yes |
+| s3\_bucket\_create | Whether to create a S3 bucket with name provided in `s3_bucket_name`. | boolean | true | no |
 | s3\_bucket\_region | The AWS Region to create the S3 Bucket resource in. Defaults to current region. | string | `""` | no |
 | s3\_bucket\_versioning\_enabled | Enable versioning. | string | `"true"` | no |
 | smooth\_streaming | Indicates whether you want to distribute media files in Microsoft Smooth Streaming format using the origin that is associated with this cache behavior. | string | `"false"` | no |
