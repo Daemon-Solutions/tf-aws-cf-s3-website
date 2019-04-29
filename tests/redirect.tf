@@ -1,6 +1,6 @@
 module "redirect" {
   source              = "../"
-  domain_names        = ["trynotto.click"]
+  aliases             = ["trynotto.click"]
   redirect_to         = "https://www.trynotto.click"
   redirect            = true
   acm_certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"

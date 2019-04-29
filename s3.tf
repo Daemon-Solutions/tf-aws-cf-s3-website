@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "website" {
       type = "AWS"
 
       identifiers = [
-        "${aws_cloudfront_origin_access_identity.website.iam_arn}",
+        "*",
       ]
     }
 
@@ -33,13 +33,21 @@ data "aws_iam_policy_document" "website" {
     resources = [
       "${aws_s3_bucket.website.arn}/*",
     ]
+
+    condition {
+      test     = "StringNotEquals"
+      variable = "aws:UserAgent"
+      values   = ["${random_string.cloudfront_user_agent.result}"]
+    }
+
+    effect = "Deny"
   }
 }
 
 resource "aws_s3_bucket" "website" {
   count  = "${var.enabled ? 1 : 0}"
   bucket = "${var.s3_bucket_name}"
-  acl    = "private"
+  acl    = "public-read"
   region = "${var.s3_bucket_region}"
 
   server_side_encryption_configuration {

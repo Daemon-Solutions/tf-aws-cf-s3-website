@@ -1,6 +1,6 @@
 module "website" {
   source              = "../"
-  domain_names        = ["www.trynotto.click", "www.stage.trynotto.click"]
+  aliases             = ["www.trynotto.click", "www.stage.trynotto.click"]
   acm_certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
   tags                = "${var.website_tags}"
   logging_bucket      = "${aws_s3_bucket.cloudfront_logs.bucket_domain_name}"
@@ -23,7 +23,7 @@ module "website" {
     },
     {
       name    = "www.stage.trynotto.click"
-      zone_id = "Z3BT5WSADCX44L"
+      zone_id = "Z1WC5KVDZ1Z3J6"
     },
   ]
 }

@@ -1,6 +1,7 @@
-resource "aws_cloudfront_origin_access_identity" "website" {
+resource "random_string" "cloudfront_user_agent" {
   count   = "${var.enabled ? 1 : 0}"
-  comment = "The origin access identity for website and redirection solution."
+  length  = 16
+  special = false
 }
 
 resource "aws_cloudfront_distribution" "website" {
@@ -18,13 +19,25 @@ resource "aws_cloudfront_distribution" "website" {
   price_class         = "${var.price_class}"
   retain_on_delete    = false
 
+  # Due to the way the AWS APIs handles the call for the aws_s3_bucket.resource_name.website_endpoint call,
+  # it needs to be defined as a custom origin.
+  # References:
+  #   https://github.com/terraform-providers/terraform-provider-aws/issues/4757
+  #   https://github.com/terraform-providers/terraform-provider-aws/pull/5947/files
   origin {
     origin_id   = "${aws_s3_bucket.website.id}"
-    domain_name = "${aws_s3_bucket.website.bucket_regional_domain_name}"
-    origin_path = ""
+    domain_name = "${aws_s3_bucket.website.website_endpoint}"
 
-    s3_origin_config {
-      origin_access_identity = "${aws_cloudfront_origin_access_identity.website.cloudfront_access_identity_path}"
+    custom_origin_config {
+      http_port              = "80"
+      https_port             = "443"
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
+    }
+
+    custom_header {
+      name  = "User-Agent"
+      value = "${random_string.cloudfront_user_agent.result}"
     }
   }
 

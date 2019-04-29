@@ -29,7 +29,7 @@ resource "aws_route53_record" "cert_dns_validation_record_alternate" {
   name    = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_name}"
   type    = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_type}"
   ttl     = 60
-  zone_id = "Z3BT5WSADCX44L"
+  zone_id = "Z1WC5KVDZ1Z3J6"
 
   records = [
     "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_value}",
