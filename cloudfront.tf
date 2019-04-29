@@ -85,4 +85,6 @@ resource "aws_cloudfront_distribution" "website" {
     ssl_support_method             = "sni-only"
     minimum_protocol_version       = "${var.minimum_ssl_protocol_version}"
   }
+
+  custom_error_response = "${var.custom_error_responses}"
 }

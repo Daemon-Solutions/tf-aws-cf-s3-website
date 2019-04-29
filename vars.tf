@@ -41,6 +41,12 @@ variable "cors_rule" {
   default     = []
 }
 
+variable "custom_error_responses" {
+  description = "A list of custom error response elements."
+  type        = "list"
+  default     = []
+}
+
 variable "default_ttl" {
   description = "The default amount of time (in seconds) that an object is in a CloudFront cache before CloudFront forwards another request in the absence of an Cache-Control max-age or Expires header."
   type        = "string"
