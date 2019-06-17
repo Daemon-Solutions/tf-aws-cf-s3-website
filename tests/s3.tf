@@ -1,4 +1,5 @@
-data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "current" {
+}
 
 data "aws_iam_policy_document" "cloudfront_logs" {
   statement {
@@ -8,7 +9,7 @@ data "aws_iam_policy_document" "cloudfront_logs" {
       type = "AWS"
 
       identifiers = [
-        "${data.aws_caller_identity.current.account_id}",
+        data.aws_caller_identity.current.account_id,
       ]
     }
 
@@ -46,6 +47,6 @@ resource "aws_s3_bucket" "cloudfront_logs" {
 }
 
 resource "aws_s3_bucket_policy" "cloudfront_logs" {
-  bucket = "${aws_s3_bucket.cloudfront_logs.id}"
-  policy = "${data.aws_iam_policy_document.cloudfront_logs.json}"
+  bucket = aws_s3_bucket.cloudfront_logs.id
+  policy = data.aws_iam_policy_document.cloudfront_logs.json
 }

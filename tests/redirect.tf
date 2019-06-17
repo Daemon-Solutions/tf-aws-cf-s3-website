@@ -3,9 +3,9 @@ module "redirect" {
   aliases             = ["trynotto.click"]
   redirect_to         = "https://www.trynotto.click"
   redirect            = true
-  acm_certificate_arn = "${aws_acm_certificate_validation.cert.certificate_arn}"
-  tags                = "${var.website_redirect_tags}"
-  logging_bucket      = "${aws_s3_bucket.cloudfront_logs.bucket_domain_name}"
+  acm_certificate_arn = aws_acm_certificate_validation.cert.certificate_arn
+  tags                = var.website_redirect_tags
+  logging_bucket      = aws_s3_bucket.cloudfront_logs.bucket_domain_name
   logging_prefix      = "redirect"
   s3_bucket_name      = "trynottoclick-redirect"
 }
@@ -16,8 +16,8 @@ resource "aws_route53_record" "redirection_dns" {
   type    = "A"
 
   alias {
-    name                   = "${module.redirect.cf_domain_name}"
-    zone_id                = "${module.redirect.cf_hosted_zone_id}"
+    name                   = module.redirect.cf_domain_name
+    zone_id                = module.redirect.cf_hosted_zone_id
     evaluate_target_health = true
   }
 }
