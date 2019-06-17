@@ -1,5 +1,5 @@
 variable "website_tags" {
-  type = "map"
+  type = map(string)
 
   default = {
     "environment" = "prod"
@@ -8,7 +8,7 @@ variable "website_tags" {
 }
 
 variable "website_redirect_tags" {
-  type = "map"
+  type = map(string)
 
   default = {
     "environment" = "prod"

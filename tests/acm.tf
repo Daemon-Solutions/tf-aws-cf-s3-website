@@ -8,43 +8,50 @@ resource "aws_acm_certificate" "cert" {
 
   subject_alternative_names = [
     "www.stage.trynotto.click",
+    "trynotto.click",
   ]
 
   validation_method = "DNS"
-  provider          = "aws.us-east-1"
+  provider          = aws.us-east-1
 }
 
 resource "aws_route53_record" "cert_dns_validation_record_base" {
-  name    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_name}"
-  type    = "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_type}"
+  name    = aws_acm_certificate.cert.domain_validation_options[0].resource_record_name
+  type    = aws_acm_certificate.cert.domain_validation_options[0].resource_record_type
   ttl     = 60
   zone_id = "ZW7HC3OXIT5P9"
 
   records = [
-    "${aws_acm_certificate.cert.domain_validation_options.0.resource_record_value}",
+    aws_acm_certificate.cert.domain_validation_options[0].resource_record_value,
   ]
 }
 
-resource "aws_route53_record" "cert_dns_validation_record_alternate" {
-  name    = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_name}"
-  type    = "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_type}"
+resource "aws_route53_record" "cert_dns_validation_record_alternate_www" {
+  name    = aws_acm_certificate.cert.domain_validation_options[1].resource_record_name
+  type    = aws_acm_certificate.cert.domain_validation_options[1].resource_record_type
   ttl     = 60
-  zone_id = "Z1WC5KVDZ1Z3J6"
+  zone_id = "ZW7HC3OXIT5P9"
 
   records = [
-    "${aws_acm_certificate.cert.domain_validation_options.1.resource_record_value}",
+    aws_acm_certificate.cert.domain_validation_options[1].resource_record_value,
+  ]
+}
+
+resource "aws_route53_record" "cert_dns_validation_record_alternate_base" {
+  name    = aws_acm_certificate.cert.domain_validation_options[2].resource_record_name
+  type    = aws_acm_certificate.cert.domain_validation_options[2].resource_record_type
+  ttl     = 60
+  zone_id = "Z3Q5JMOREGM7ER"
+
+  records = [
+    aws_acm_certificate.cert.domain_validation_options[2].resource_record_value,
   ]
 }
 
 resource "aws_acm_certificate_validation" "cert" {
-  certificate_arn = "${aws_acm_certificate.cert.arn}"
+  certificate_arn = aws_acm_certificate.cert.arn
 
-  validation_record_fqdns = [
-    "${aws_route53_record.cert_dns_validation_record_base.fqdn}",
-    "${aws_route53_record.cert_dns_validation_record_alternate.fqdn}",
-  ]
-
-  provider = "aws.us-east-1"
+  provider = aws.us-east-1
 
   timeouts {
     create = "30m"

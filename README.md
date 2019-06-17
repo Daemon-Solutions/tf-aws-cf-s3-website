@@ -3,6 +3,15 @@ A CloudFront and S3 Bucket solution for the following two scenarios:
  - Hosting a static website.
  - Redirecting the web traffic to another website.
 
+## Terraform version compatibility
+
+| Module version | Terraform version |
+|----------------|-------------------|
+| 1.x.x          | 0.12.x            |
+| 0.x.x          | 0.11.x            |
+
+Upgrading from 0.11.x and earlier to 0.12.x should be seamless.  You can simply update the `ref` in your `source` to point to a version greater than `1.0.0`.
+
 ## Usage
 
 ```js
@@ -75,7 +84,7 @@ module "website" {
 | allowed\_methods | Controls which HTTP methods CloudFront processes and forwards to your Amazon S3 bucket or your custom origin. | list | `<list>` | no |
 | cached\_methods | Controls whether CloudFront caches the response to requests using the specified HTTP methods. | list | `<list>` | no |
 | comment | Any comments you want to include about the distribution. | string | `""` | no |
-| cors\_rule | A rule of Cross-Origin Resource Sharing. | list | `<list>` | no |
+| cors\_rule | A rule of Cross-Origin Resource Sharing. | list of maps | `<list>` | no |
 | custom\_error\_responses | A list of custom error response elements. | list | `[]` | no |
 | default\_root\_object | The filename or the HTML file to use/present when browsing to the website. | string | `"index.html"` | no |
 | default\_ttl | The default amount of time (in seconds) that an object is in a CloudFront cache before CloudFront forwards another request in the absence of an Cache-Control max-age or Expires header. | string | `"86400"` | no |
@@ -92,7 +101,7 @@ module "website" {
 | price\_class | The price class for this distribution. One of PriceClass_All, PriceClass_200, PriceClass_100. | string | `"PriceClass_All"` | no |
 | redirect | Enable redirection mode. | string | `"false"` | no |
 | redirect\_to | The URL that the web traffic will be redirected to. Eg. https://www.example.com | string | `""` | no |
-| route53\_alias\_records | A list of maps of the domains in the CloudFront Distribution to the Route53 Zone IDs to be used to create DNS Alias records.  For example: ```route53_alias_records = [ { name = "www.example.com" zone_id = "Z123456" }, { name = "www.stage-example.com" zone_id = "Z123456" } ]```) | list | `<list>` | no |
+| route53\_alias\_records | A list of maps of the domains in the CloudFront Distribution to the Route53 Zone IDs to be used to create DNS Alias records.  For example: ```route53_alias_records = [ { name = "www.example.com" zone_id = "Z123456" }, { name = "www.stage-example.com" zone_id = "Z123456" } ]```) | list of maps | `<list>` | no |
 | routing\_rules | A json array containing routing rules describing redirect behavior and when redirects are applied to a website. | string | `""` | no |
 | s3\_bucket\_name | The name of the S3 Bucket to be created. | string | n/a | yes |
 | s3\_bucket\_region | The AWS Region to create the S3 Bucket resource in. Defaults to current region. | string | `""` | no |
