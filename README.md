@@ -85,7 +85,7 @@ module "website" {
 | cached\_methods | Controls whether CloudFront caches the response to requests using the specified HTTP methods. | list | `<list>` | no |
 | comment | Any comments you want to include about the distribution. | string | `""` | no |
 | cors\_rule | A rule of Cross-Origin Resource Sharing. | list of maps | `<list>` | no |
-| custom\_error\_responses | A list of custom error response elements. | list | `[]` | no |
+| custom\_error\_responses | A list of custom error response elements. | list of maps | `[]` | no |
 | default\_root\_object | The filename or the HTML file to use/present when browsing to the website. | string | `"index.html"` | no |
 | default\_ttl | The default amount of time (in seconds) that an object is in a CloudFront cache before CloudFront forwards another request in the absence of an Cache-Control max-age or Expires header. | string | `"86400"` | no |
 | enabled | Enable and create the CloudFront Distribution and S3 Bucket solution. | string | `"true"` | no |
