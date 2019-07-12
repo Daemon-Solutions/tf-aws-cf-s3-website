@@ -43,7 +43,7 @@ variable "cors_rule" {
 
 variable "custom_error_responses" {
   description = "A list of custom error response elements."
-  type        = list(string)
+  type        = list(map(string))
   default     = []
 }
 
