@@ -1,3 +1,11 @@
+data "aws_iam_role" "Administrator" {
+  name = "Administrator"
+}
+
+data "aws_iam_role" "ReadOnly" {
+  name = "ReadOnly"
+}
+
 module "website" {
   source              = "../"
   aliases             = ["www.trynotto.click", "www.stage.trynotto.click"]
@@ -6,6 +14,10 @@ module "website" {
   logging_bucket      = "${aws_s3_bucket.cloudfront_logs.bucket_domain_name}"
   logging_prefix      = "website"
   s3_bucket_name      = "trynottoclick-website"
+  aws_user_ids        = [
+    "${element(split(":",data.aws_iam_role.ReadOnly.unique_id),0)}:*",
+    "${element(split(":",data.aws_iam_role.Administrator.unique_id),0)}:*",
+  ]
 
   cors_rule = [
     {

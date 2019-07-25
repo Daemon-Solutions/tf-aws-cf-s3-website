@@ -40,6 +40,12 @@ data "aws_iam_policy_document" "website" {
       values   = ["${random_string.cloudfront_user_agent.result}"]
     }
 
+    condition {
+      test     = "StringNotLike"
+      variable = "aws:userId"
+      values   = ["${var.aws_user_ids}"]
+    }
+
     effect = "Deny"
   }
 }
