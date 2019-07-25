@@ -73,6 +73,7 @@ module "website" {
 | acm\_certificate\_arn | The ARN of the AWS Certificate Manager certificate that you wish to use with this distribution. The ACM certificate must be in US-EAST-1 (N. Virginia). | string | n/a | yes |
 | aliases | Extra CNAMEs (alternate domain names). | list | `<list>` | no |
 | allowed\_methods | Controls which HTTP methods CloudFront processes and forwards to your Amazon S3 bucket or your custom origin. | list | `<list>` | no |
+| aws_user_ids | A list of AWS User or Role UIDs to be excluded from the `GetObject Deny` in the S3 Bucket Policy. | list | `<list>` | no |
 | cached\_methods | Controls whether CloudFront caches the response to requests using the specified HTTP methods. | list | `<list>` | no |
 | comment | Any comments you want to include about the distribution. | string | `""` | no |
 | cors\_rule | A rule of Cross-Origin Resource Sharing. | list | `<list>` | no |
@@ -115,3 +116,16 @@ module "website" {
 | s3\_bucket\_id | The name of the S3 Bucket. |
 | s3\_bucket\_website\_domain | The domain of the website endpoint. This is used to create Route 53 alias records. |
 | s3\_bucket\_website\_endpoint | The website endpoint. |
+
+## Note on the `aws_user_ids` Input variable.
+To elaborate the ID format the aws:userid sees is:
+
+```
+UNIQUE-ROLE-ID:ROLE-SESSION-NAME
+```
+
+so if your Role ID is `AROA00000000000000000` when assumed it will be appended with a session name like `AROA00000000000000000:mysession` so either white list `AROA00000000000000000:mysession` and any other session names you will want to have as part of the exclusion to the `Deny` action or do a wild card match `AROA00000000000000000:*`.
+
+If no AWS User IDs are specified, then you will only be able to perform the `GetObject` action on the objects n the S3 Bucket if you include the correct `user-agent` value in the header of the request.
+
+Additional information can be found in the AWS `IAM Policy Elements: Variables and Tags` documentation which can be found at https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_variables.html

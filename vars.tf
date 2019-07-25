@@ -29,6 +29,12 @@ variable "cached_methods" {
   ]
 }
 
+variable "aws_user_ids" {
+  type = "list"
+
+  default = []
+}
+
 variable "comment" {
   description = "Any comments you want to include about the distribution."
   type        = "string"
