@@ -129,3 +129,12 @@ so if your Role ID is `AROA00000000000000000` when assumed it will be appended w
 If no AWS User IDs are specified, then you will only be able to perform the `GetObject` action on the objects n the S3 Bucket if you include the correct `user-agent` value in the header of the request.
 
 Additional information can be found in the AWS `IAM Policy Elements: Variables and Tags` documentation which can be found at https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_variables.html
+
+To get the AWS User or Role ID, you run the of the following commands using the AWS CLI:
+```
+aws iam get-user --user-name ReadOnlyUser | grep UserId
+```
+or
+```
+aws iam get-role --role-name ReadOnlyRole | grep RoleId
+```
