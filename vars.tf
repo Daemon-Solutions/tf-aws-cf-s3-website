@@ -18,6 +18,13 @@ variable "allowed_methods" {
   ]
 }
 
+variable "aws_user_ids" {
+  description = "A list of AWS User or Role UIDs to be excluded from the GetObject Deny in the S3 Bucket Policy."
+  type        = list(string)
+
+  default = []
+}
+
 variable "cached_methods" {
   description = "Controls whether CloudFront caches the response to requests using the specified HTTP methods."
   type        = list(string)
